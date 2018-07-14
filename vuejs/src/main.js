@@ -1,15 +1,41 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+// Import packages.
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
+import Home from './components/Home'
+import platformVar from 'platformsh_variables'
 
-Vue.config.productionTip = false
+Vue.use(VueRouter)
+Vue.use(VueResource)
 
-/* eslint-disable no-new */
+// Declare routes.
+const routes = [
+  {
+    path: '/',
+    component: Home
+  }
+]
+
+// Declare router.
+const router = new VueRouter({
+  routes,
+  mode: 'history'
+})
+
+// Get Platform.sh URL.
+let entrypoint = Object.keys(platformVar).find(url => url.startsWith('https://api.'))
+
+if (entrypoint) {
+  Vue.http.options.root = entrypoint.substring(0, entrypoint.length)
+}
+
+// Initialize Vue App.
 new Vue({
   el: '#app',
-  router,
   template: '<App/>',
-  components: { App }
-})
+  components: {
+    App
+  },
+  router
+}).$mount('#app')
