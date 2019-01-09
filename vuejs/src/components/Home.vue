@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     getData: function () {
-      this.$http.get('food').then(response => {
+      this.$http.get('drupalcamp-singapore-2018').then(response => {
         this.items = response.body
         console.log(this.items)
       }, response => {
